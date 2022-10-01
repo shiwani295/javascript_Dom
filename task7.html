@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Item Lister</title>
+</head>
+<body>
+  <header id="main-header" class="bg-success text-white p-4 mb-3">
+    <div class="container">
+
+      <h1 id="header-title">Item Lister <span style="display:none">123</span></h1>
+    </div>
+  </header>
+  <div class="container">
+   <div id="main" class="card card-body">
+    <h2 class="title">Add Items</h2>
+    <form class="form-inline mb-3">
+      <input type="text" class="form-control mr-2">
+      <input type="submit" class="btn btn-dark" value="Submit">
+    </form>
+    <h2 class="title">Items</h2>
+    <ul id="items" class="list-group">
+
+      <li class="list-group-item">Item 1</li>
+      <li class="list-group-item">Item 2</li>
+      <li class="list-group-item">Item 3</li>
+      <li class="list-group-item">Item 4</li>
+    </ul>
+    <span></span>
+   </div>
+  </div>
+<script type="text/javascript">
+var itemList=document.querySelector('#items');
+// parentNode Property
+
+//console.log(itemList.parentNode);
+//itemList.parentNode.style.backgroundColor = "yellow";
+
+//example
+//console.log(itemList.parentNode.parentNode.parentNode.parentNode)
+
+//----------------------------
+//1. parentElement
+// console.log(itemList.parentElement);
+//itemList.parentElement.style.backgroundColor = "yellow";
+
+//--------------------------
+
+//childNodes
+//console.log(itemList.childNodes);
+//console.log(itemList.childNodes[1]); //if you want specific one element
+//itemList.childNodes[1].style.backgroundColor="green";//you with pic item 1 when using childNode
+
+//console.log(itemList.children[1]);
+//itemList.children[1].style.backgroundColor="green";//you will pic item 2 just because of index 0,1
+
+//------------------------
+
+//2.lastelementchild
+//console.log(itemList.lastElementChild);
+itemList.lastElementChild.style.backgroundColor="green";//it will change th e color item 4
+
+//-----------------------------
+
+// 6.First Child
+//console.log(itemList.firstChild);
+itemList.firstChild.textContent="First Child"; // print hey above item1
+
+// 5.FirstElementChild
+//console.log(itemList.firstElementChild);
+itemList.firstElementChild.textContent="FirstElementChild"; //replace item1 to hello
+
+
+//3.lastchild
+//console.log(itemList.lastChild);//same as firstchild output #text
+//itemList.lastChild.textContent="goodBye"// print goodBye below item4
+
+//lastElementChild
+//itemList.lastElementChild.textContent="GoodBye";//it justreplace item4 to GoodBye
+
+//----------------
+//itemList
+//console.log(itemList.nextSibling);//itemList.nextSibling.textContent="Goodmorning";
+//itemList.nextSibling.textContent="good";
+
+//nextElementSibling
+itemList.nextElementSibling.textContent="nextElementSibling"//create span and then print GOODMORNING but when there is no span it will return NULL
+
+//-------------------------
+//previoussibling
+//console.log(itemList.previousSibling);
+itemList.previousSibling.textContent="previousSibling";
+
+//previouselementsibling
+//console.log(itemList.previousElementSibling);
+itemList.previousElementSibling.textContent="previouselementsibling";
+
+//-------------------------
+
+//createelement
+
+//create div
+
+var newDiv= document.createElement('div')
+//add class
+newDiv.className="hello";
+
+//add id
+newDiv.id="hello1";
+
+//add attibute
+newDiv.setAttribute('title','hellodiv');
+
+//create text node
+var newDivText=document.createTextNode("hello world");
+//add text to div
+newDiv.appendChild(newDivText);
+
+//we want to add hellow before (item lister ) container 
+var container =document.querySelector('header .container');
+var h1= document.querySelector('header h1');
+container.insertBefore(newDiv,h1);
+newDiv.style.fontSize='30px';
+//console.log(newDiv);
+
+//Now go head and add HEllo word before Item 1
+var newli= document.createElement('li');
+newli.className="list-group-item";
+//create text node
+var newliText=document.createTextNode("Item5");
+newli.appendChild(newliText);
+
+var item1 =document.querySelector('div .list-group');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+var li= document.querySelector('div li');
+//console.log(newli);
+item1.insertBefore(newli,li);
+
+</script>
+</body>
+</html>
