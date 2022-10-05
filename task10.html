@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Item Lister</title>
+</head>
+<body>
+  <header id="main-header" class="bg-success text-white p-4 mb-3">
+    <div class="container">
+
+      <h1 id="header-title">Appointment App<span style="display:none">123</span></h1>
+    </div>
+  </header>
+  <div class="container">
+   <div id="main" class="card card-body">
+    <h2 class="title text-center">Book Your Position</h2>
+    <form  id="my-form" class="form-inline mb-3">
+      <input id="name" type="text" class="form-control mr-2" placeholder="Name..">
+      <input id="email" type="text" class="form-control mr-2" placeholder="Email..">
+      <input type="submit" inputitemclass="btn btn-dark" value="Submit" id="form-button">
+    </form>
+   </div>
+  </div>
+  <script type="text/javascript">
+
+    const MyForm = document.getElementById('my-form');
+    const userName = document.getElementById('name');
+    const userEmail= document.getElementById('email');
+    const button = document.getElementById('form-button');
+
+    button.addEventListener('click',onSubmit)
+    function onSubmit(e){
+        e.preventDefault()
+        
+    let user_Obj = {
+        name: userName.value,
+        email: userEmail.value
+    }
+    //localstorage accepts only string so we convert it to one
+    const obj_stringified = JSON.stringify(user_Obj)
+    // console.log(obj_stringified);
+   //save it by making email as a key for object
+   localStorage.setItem(userEmail.value,obj_stringified)
+   userName.value = ''
+   userEmail.value = ''
+    }
+    
+
+
+
+  </script>
+</body>
+</html>
