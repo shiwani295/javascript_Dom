@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>task13</title>
+</head>
+<body>
+  <header id="main-header" class="bg-success text-white p-4 mb-3">
+    <div class="container">
+
+      <h1 id="header-title">Edit delete Dom Manipulation</h1>
+    </div>
+  </header>
+  <div class="container">
+   <div id="main" class="card card-body" style="background-color: #7896b7;">
+    <form id="my-form">
+        <h1>Add User</h1>
+        <div id="msg"></div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Name..">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Email..">
+        </div>
+        <input class="btn btn-primary" id="form-button"  type="submit" value="Submit">
+    </form>
+      <hr>
+    <h2 class="title">User Details</h2>
+          <div id="div-containing-items" class="total-list">
+          <!-- <div class="divitem">
+            <h4>Name of user</h4>
+            <h4>Email of user</h4>
+            <button class="editBtn">Edit</button>
+            <button class="deleteBtn">Delete</button>
+          </div>-->
+
+    <ul id="userList" class="list-group">
+
+    </ul>
+    <span></span>
+   </div>
+  </div>
+  <script type="text/javascript">
+    const MyForm=document.querySelector('#my-form')
+    const nameInput=document.querySelector('#name');
+    const emailInput= document.querySelector('#email');
+    const button = document.querySelector('#form-button');
+
+
+   //we need the content in the local storage to be loaded in the frontend 
+   //when we open the application and window gets loaded
+
+    document.addEventListener('DOMContentLoaded',function(){
+    //console.log('window loaded');
+    //now we need to display all the details present in the local storage to the screen whenever
+    //screen loads for the first time after clossing the app too
+
+     //we will iterate through all the keys present in the local storage and take out the values.
+     let arrayOfKeys = Object.keys(localStorage)
+     //console.log(arrayOfKeys);
+
+
+    arrayOfKeys.forEach(function(key){
+//get this value as in string 
+        let valuesAgainstKeysInLocal = localStorage.getItem(key)
+        //console.log(valuesAgainstKeysInLocal);
+
+        //these values will be stringified to we have to convert then back to an object
+        //for this we will use JSON.parse(covert string into object)
+        let unstringifieldValueKey=JSON.parse(valuesAgainstKeysInLocal);
+        //console.log(unstringifieldValueKey);
+        const nameValue =unstringifieldValueKey.name
+        const emailValue=unstringifieldValueKey.email
+       // console.log(nameValue,emailValue);
+
+
+       //after fetching the element we have to ************create h4  element ************
+       const h4name =document.createElement('h4')
+       const h4email =document.createElement('h4')
+       //console.log(h4name);
+       
+
+       //assigning value 
+       h4name.innerHTML=nameValue
+       h4email.innerHTML=emailValue
+       //console.log(h4name,h4email);
+
+       //asigning class in h4
+       h4email.classList.add('email-h4-class')
+
+       //creating edit and deletebutton 
+       const editbutton=document.createElement('button')
+       const deletebutton=document.createElement('button')
+      
+
+       //assigning class
+       editbutton.classList.add('editBtn')
+       deletebutton.classList.add('deleteBtn')
+
+       //inner text of button
+       editbutton.innerText='Edit'
+       deletebutton.innerText='Delete'
+
+       //create div and append all the item in it
+       const innerDivForRelodedData =document.createElement('div')
+       //assign the class in div
+       innerDivForRelodedData .classList.add('divitem')
+       
+       //appending all the parents \ selecting parent div with id 
+       const parentDivAllData=document.getElementById('div-containing-items')
+       parentDivAllData.appendChild(innerDivForRelodedData)
+       innerDivForRelodedData.appendChild(h4name)
+       innerDivForRelodedData.appendChild(h4email)
+       innerDivForRelodedData.appendChild(editbutton)
+       innerDivForRelodedData.appendChild(deletebutton)
+
+
+
+// click on delete button
+       deletebutton.addEventListener('click',deletetext)
+
+       function deletetext(e){
+        e.preventDefault()
+        const targetElementEmailThroughEditBtnInRelodedData=deletebutton.previousSibling
+        //console.log(targetElementEmailThroughEditBtnInRelodedData); here we will get privious button edit 
+        const targetKeyEmailElementForRelodedData = targetElementEmailThroughEditBtnInRelodedData.previousSibling
+        //console.log(targetKeyEmailElementForRelodedData); here we get <p> tag email portion just because of previoussibling
+
+        // we need to fetch inner html for the value of key
+         const targetElemetInnerHtmlForRelodedData = targetKeyEmailElementForRelodedData.innerHTML 
+        //console.log(targetElemetInnerHtmlForRelodedData);
+
+        //remove the key:value pair from local storage
+        localStorage.removeItem(targetElemetInnerHtmlForRelodedData)
+
+        // target the parent div of this delete button
+        const parent_div_of_this_delete_button_for_reloded_data = deletebutton.parentElement
+
+        //remove the div from the frontend
+        parent_div_of_this_delete_button_for_reloded_data.remove()
+       }//end delete button function
+
+       ////////////////---------> edit button 
+
+       editbutton.addEventListener('click',editItem)
+
+       function editItem(e){
+       e.preventDefault()
+       //console.log("sdfgh");
+
+       const targetElementemail=editbutton.previousSibling;//email tag
+       const tagetElementname=editbutton.previousSibling.previousSibling// name tag
+       //const targetKeyname=targetElementname.previousSibling;
+       //console.log(targetKeyname); will get name tag
+
+
+      //get here 'shiwani tiwari' without html tag (fetching value of name and email)
+       const getname=tagetElementname.innerHTML
+       const getemail=targetElementemail.innerHTML
+       //console.log(getemail); //will get name only no <p> tag 
+
+      //insert values in the input box respectively
+      //target input box of name and email and assign to a variable
+      const nameInputBoxForRelodedData = document.getElementById('name')
+      const emailInputBoxForRelodedData = document.getElementById('email')
+
+      //we inser the calues if respective name and email in the input box
+      nameInputBoxForRelodedData.value = getname
+      emailInputBoxForRelodedData.value = getemail
+
+      //delete from local targetting the email as a key 
+      localStorage.removeItem(getemail)
+    
+     //delete the div constaining the edit button which was click
+     const targetButtonParentForRelodedData=editbutton.parentElement
+     targetButtonParentForRelodedData.remove()
+
+       }
+    })
+
+    //////////////////////again submit 
+
+    button.addEventListener('click', onsubmit)
+
+    function onsubmit(e){
+      e.preventDefault()
+      
+
+
+    let obj={
+      name:nameInput.value,//here we get nameinput id start of the code 
+      email:emailInput.value
+      }
+     //console.log(obj.name);
+
+/////////////////repeat  before delete button 
+
+//////again create same div h4 edit ubtton delete button
+
+     // we stringify the object and save it in a variable
+     let stringfiedDetails = JSON.stringify(obj)
+     console.log(stringfiedDetails.name);//{"name":"IDEALzxc","email":"ideal200002@gmail.com"}
+
+       //create elemets to show these datas which we got after checking from the localStorage //
+      const innerDiv = document.createElement('div')
+      const nameContainerH4 = document.createElement('h4')
+      //console.log(nameContainerH4);
+      const emailContainerH4 = document.createElement('h4')
+
+      // Assigning ids and classes to each elements created //
+      innerDiv.classList.add('divitem')   //we dont need to provide classes to h4
+
+      // creating buttons Edit and Delete 
+      const editButton1 = document.createElement('button')
+      const deleteButton1 = document.createElement('button')
+
+      //assignig classes and ids to the buttons created in step 12 //
+        editButton1.classList.add('editBtn')
+        deleteButton1.classList.add('deleteBtn')
+
+         //Inner html of buttons
+        editButton1.innerHTML = 'Edit'
+        deleteButton1.innerHTML = 'Delete'
+
+        //Add class to the email
+        emailContainerH4.classList.add('email-h4-class')
+        
+        // we need to select the parent elements of the elements created
+        const parentDiv = document.getElementById('div-containing-items')//div ki id hai
+        parentDiv.appendChild(innerDiv)
+       // console.log(parentDiv);
+
+      //assignig values of name and email to be printed in the frontend
+      
+      nameContainerH4.innerHTML = name.value
+      emailContainerH4.innerHTML = email.value
+  
+
+    //assigning value of current email to a variable to check in localStorage using for each 
+      let checkEmail = email
+      //let checkname = name.value
+      //console.log(checkname);
+      //console.log(checkEmail);
+
+      //iterate through all keys in localStorage
+      let allKeysInLocalStorage = Object.keys(localStorage)
+      //console.log(allKeysInLocalStorage); //) [here we get email from local storage key value ]
+      if(allKeysInLocalStorage.length >0){
+
+        allKeysInLocalStorage.forEach(function(key){
+          //console.log(key)//without array get email whcih inside the local storage
+          if(checkEmail==key){
+             // console.log('yes it key was present and we need to delete previous div from frontend in step 17')                  //working
+             //we update the value of the email
+             //we need to update the frontend data from here <---replace old data with newone by deleting old & appending new----
+
+              //delete by targetting the div with email in it //
+              const Duplicate_Data = document.querySelectorAll('.email-h4-class')
+              //console.log(Duplicate_Data);
+
+              for(var i=0; i<Duplicate_Data.length; i++ ) {
+                //console.log(Duplicate_Data[i].innerHTML);
+                if(Duplicate_Data[i].innerHTML == checkEmail){
+                  const parentDiv=Duplicate_Data[i].parentElement
+                  //console.log(parentDiv);
+                  parentDiv.remove()
+                }
+                
+             }
+
+            //appending values in respective cases
+                    innerDiv.appendChild(nameContainerH4)
+                    innerDiv.appendChild(emailContainerH4)
+                    innerDiv.appendChild(editButton)
+                    innerDiv.appendChild(deleteButton)
+                    localStorage.setItem(checkEmail,stringfiedDetails)
+          }//check email if end bracket
+          else{
+                    // step 16 (b)
+                    innerDiv.appendChild(nameContainerH4)
+                    innerDiv.appendChild(emailContainerH4)
+                    innerDiv.appendChild(editButton)
+                    innerDiv.appendChild(deleteButton)
+                    //step 8 (c)
+                    // console.log('no');
+                    localStorage.setItem(checkEmail,stringfiedDetails)
+                }
+
+         })
+
+
+      }else{
+            // step 16 (c)
+            innerDiv.appendChild(nameContainerH4)
+            innerDiv.appendChild(emailContainerH4)
+            innerDiv.appendChild(editButton)
+            innerDiv.appendChild(deleteButton)
+            //step 8 (a)
+            //if length of the array of keys from local is 0. add the data in it and print in frontend
+            localStorage.setItem(checkEmail,stringfiedDetails)
+        }
+         // making input field empty for other users to input data again
+         name.value = ''
+         email.value = ''
+
+//targeting delete btn if every div //
+
+deleteButton.addEventListener('click', function(){
+            // console.log('clicked');              //working
+            
+            //step 18 (a)
+            //remove the div from local storage
+            // step 18(a) -> (1)
+            // get the email part out of the html in the div to target the values in the local storage
+            const targetElementEmailThroughEditBtn = deleteButton.previousSibling
+            // console.log('targetElementEmailThroughEditBtn',targetElementEmailThroughEditBtn);       //will give us edit button
+            const targetKeyEmailElement = targetElementEmailThroughEditBtn.previousSibling
+            // console.log(targetKeyEmailElement);
+            // we need to fetch inner html for the value of key
+            // console.log(targetKeyEmailElement.innerHTML);
+            const targetElemetInnerHtml = targetKeyEmailElement.innerHTML
+            //now perform step 18 (a) -> (2)
+
+            // step 18(a) -> (2)
+            //remove the key:value pair from local storage
+            localStorage.removeItem(targetElemetInnerHtml)
+
+            //step 18 (b)
+            // target the parent div of this delete button
+            const parent_div_of_this_delete_button = deleteButton.parentElement
+            // console.log(parent_div_of_this_delete_button);         //working
+
+            //remove the div from the frontend
+            parent_div_of_this_delete_button.remove()
+
+            
+
+        })
+
+
+
+        //target edit button and fetch->insert in input box -> delete from frontend ->delete from local
+        editButton.addEventListener('click', function(){
+            // console.log('clicked Edit');
+            //step 19 (a)
+            //fetch inner html of name and email elements and assign to a variable
+            //create 2 variables to target name and email elemets respectively
+            const nameElement = editButton.previousSibling.previousSibling
+            // console.log(nameElement);
+            const emailElement = editButton.previousSibling
+            // console.log(emailElement);
+
+            //fetching value of name and email
+            const nameElementInnerHtml = nameElement.innerHTML         
+            // console.log(nameElementInnerHtml);
+            const emailElementInnerHtml = emailElement.innerHTML
+            // console.log('emailElementInnerHtml',emailElementInnerHtml);
+
+            //step 19 (b)
+            //insert values in the input box respectively
+            //step 19 (b) ->(1)
+            //target input box of name and email and assign to a variable
+            const nameInputBox = document.getElementById('name')
+            const emailInputBox = document.getElementById('email')
+
+            //step 19 (b) ->(2)
+            //we inser the calues if respective name and email in the input box
+            nameInputBox.value = nameElementInnerHtml
+            emailInputBox.value = emailElementInnerHtml
+
+            // step (19) -> (3)
+            //delete from local targetting the email as a key from 'step 19(a)'  //
+            localStorage.removeItem(emailElementInnerHtml)
+
+            //step (19) -> (4)
+            //delete the div constaining the edit button which was click
+            const targetButtonParent=editButton.parentElement
+            // console.log(targetButtonParent);
+            targetButtonParent.remove()
+            ////////=================== step 21 is to load previous data in local storage ==============================
+            
+
+        })
+
+
+
+
+
+     
+
+    }
+
+
+   
+
+
+
+     })
+    
+   
+  </script>
+</body>
+</html>
